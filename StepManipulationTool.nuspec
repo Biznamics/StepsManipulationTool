@@ -21,7 +21,7 @@
     <copyright>Copyright 2016-2026 Biznamics AB</copyright>
     <tags>XrmToolBox Plugins StepManipulationTool Step Manipulator</tags>
     <dependencies>
-		<dependency id="XrmToolBoxPackage" version="1.2024.5.1" />
+		<dependency id="XrmToolBoxPackage" version="1.2025.10.74" />
     </dependencies>
   </metadata>
   <files>
