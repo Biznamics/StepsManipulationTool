@@ -67,4 +67,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: build-output-${{ steps.version.outputs.VERSION }}
-          path: StepManipulationTool/bin/Release/
+          path: |
+            StepManipulationTool/bin/Release/ImranAkram.XTB.StepManipulationTool.dll
+            icon.png
+            README.md
