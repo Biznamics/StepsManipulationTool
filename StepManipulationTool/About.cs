@@ -1,4 +1,4 @@
-﻿namespace Innofactor.XTB.StepManipulationTool
+﻿namespace XTB.StepManipulationTool
 {
     using System;
     using System.Collections.Generic;

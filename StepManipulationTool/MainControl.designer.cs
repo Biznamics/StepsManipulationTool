@@ -1,5 +1,5 @@
 ﻿
-namespace Innofactor.XTB.StepManipulationTool
+namespace XTB.StepManipulationTool
 {
     partial class MainControl
     {
@@ -100,7 +100,7 @@ namespace Innofactor.XTB.StepManipulationTool
             // 
             // tsbClose
             // 
-            this.tsbClose.Image = global::Innofactor.XTB.StepManipulationTool.Properties.Resources.close;
+            this.tsbClose.Image = global::XTB.StepManipulationTool.Properties.Resources.close;
             this.tsbClose.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbClose.Name = "tsbClose";
             this.tsbClose.Size = new System.Drawing.Size(56, 22);
@@ -109,7 +109,7 @@ namespace Innofactor.XTB.StepManipulationTool
             // 
             // tsbRefresh
             // 
-            this.tsbRefresh.Image = global::Innofactor.XTB.StepManipulationTool.Properties.Resources.refresh;
+            this.tsbRefresh.Image = global::XTB.StepManipulationTool.Properties.Resources.refresh;
             this.tsbRefresh.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbRefresh.Name = "tsbRefresh";
             this.tsbRefresh.Size = new System.Drawing.Size(66, 22);

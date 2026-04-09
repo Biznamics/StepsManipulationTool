@@ -1,4 +1,4 @@
-﻿namespace Innofactor.XTB.StepManipulationTool
+﻿namespace XTB.StepManipulationTool
 {
     internal struct MatchResult
     {

@@ -8,8 +8,8 @@
     <ProjectGuid>{B389D9D0-DDEE-4BC0-BB5C-D6DEBCB922D9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Innofactor.XTB.StepManipulationTool</RootNamespace>
-    <AssemblyName>Innofactor.XTB.StepManipulationTool</AssemblyName>
+    <RootNamespace>XTB.StepManipulationTool</RootNamespace>
+    <AssemblyName>ImranAkram.XTB.StepManipulationTool</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
