@@ -1,0 +1,70 @@
+name: CI Build
+
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Calculate version
+        id: version
+        shell: pwsh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          $year  = (Get-Date).Year
+          $month = (Get-Date).Month
+          $startOfMonth = (Get-Date -Day 1 -Hour 0 -Minute 0 -Second 0).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
+
+          $headers = @{
+            Authorization = "Bearer $env:GITHUB_TOKEN"
+            Accept        = "application/vnd.github.v3+json"
+          }
+          $url = "https://api.github.com/repos/$env:GITHUB_REPOSITORY/actions/workflows/build.yml/runs?created=>=$startOfMonth&per_page=1"
+          $response = Invoke-RestMethod -Uri $url -Headers $headers -ErrorAction Stop
+          $rev = $response.total_count
+
+          $version = "1.$year.$month.$rev"
+          "VERSION=$version" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+          Write-Host "Computed version: $version"
+
+      - name: Patch AssemblyInfo.cs
+        shell: pwsh
+        run: |
+          $version = "${{ steps.version.outputs.VERSION }}"
+          $file = "StepManipulationTool\Properties\AssemblyInfo.cs"
+          (Get-Content $file) `
+            -replace 'AssemblyVersion\("[^"]*"\)',     "AssemblyVersion(`"$version`")" `
+            -replace 'AssemblyFileVersion\("[^"]*"\)', "AssemblyFileVersion(`"$version`")" |
+            Set-Content $file
+          Write-Host "Patched $file to version $version"
+
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v2
+
+      - name: NuGet restore
+        run: nuget restore StepsManipulationTool.sln
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Build solution
+        run: msbuild StepsManipulationTool.sln /p:Configuration=Release /p:Platform="Any CPU" /m
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-output-${{ steps.version.outputs.VERSION }}
+          path: StepManipulationTool/bin/Release/
