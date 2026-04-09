@@ -3,84 +3,34 @@ name: Release
 on:
   workflow_dispatch:
     inputs:
-      version:
-        description: 'Version to publish — leave blank to auto-generate (1.yyyy.M.rev)'
-        required: false
-        default: ''
+      run_id:
+        description: 'CI run ID whose nupkg artifact to publish (find it in the Actions tab URL)'
+        required: true
 
 jobs:
   release:
     runs-on: windows-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - name: Download nupkg artifact from CI run
+        uses: actions/download-artifact@v4
         with:
-          submodules: recursive
+          run-id: ${{ inputs.run_id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          pattern: 'nupkg-*'
+          path: nupkg
+          merge-multiple: true
 
-      - name: Calculate version
+      - name: Resolve version from nupkg filename
         id: version
         shell: pwsh
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          $inputVersion = "${{ inputs.version }}".Trim()
-          if ($inputVersion -ne "") {
-            $version = $inputVersion
-            Write-Host "Using provided version: $version"
-          } else {
-            $year  = (Get-Date).Year
-            $month = (Get-Date).Month
-            $startOfMonth = (Get-Date -Day 1 -Hour 0 -Minute 0 -Second 0).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
-
-            $headers = @{
-              Authorization = "Bearer $env:GITHUB_TOKEN"
-              Accept        = "application/vnd.github.v3+json"
-            }
-            $url = "https://api.github.com/repos/$env:GITHUB_REPOSITORY/actions/workflows/release.yml/runs?created=>=$startOfMonth&per_page=1"
-            $response = Invoke-RestMethod -Uri $url -Headers $headers -ErrorAction Stop
-            $rev = $response.total_count
-
-            $version = "1.$year.$month.$rev"
-            Write-Host "Auto-generated version: $version"
-          }
+          $pkg = Get-ChildItem nupkg\*.nupkg | Select-Object -First 1
+          if (-not $pkg) { throw "No .nupkg found in artifact" }
+          # filename: ImranAkram.XTB.StepManipulationTool.1.2026.4.3.nupkg
+          $version = $pkg.BaseName -replace '^ImranAkram\.XTB\.StepManipulationTool\.', ''
           "VERSION=$version" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
-
-      - name: Patch AssemblyInfo.cs
-        shell: pwsh
-        run: |
-          $version = "${{ steps.version.outputs.VERSION }}"
-          $file = "StepManipulationTool\Properties\AssemblyInfo.cs"
-          (Get-Content $file) `
-            -replace 'AssemblyVersion\("[^"]*"\)',     "AssemblyVersion(`"$version`")" `
-            -replace 'AssemblyFileVersion\("[^"]*"\)', "AssemblyFileVersion(`"$version`")" |
-            Set-Content $file
-          Write-Host "Patched $file to version $version"
-
-      - name: Setup NuGet
-        uses: NuGet/setup-nuget@v2
-
-      - name: NuGet restore
-        run: nuget restore StepsManipulationTool.sln
-
-      - name: Setup MSBuild
-        uses: microsoft/setup-msbuild@v2
-
-      - name: Build solution
-        run: msbuild StepsManipulationTool.sln /p:Configuration=Release /p:Platform="Any CPU" /m
-
-      - name: Patch nuspec version
-        shell: pwsh
-        run: |
-          $version = "${{ steps.version.outputs.VERSION }}"
-          $nuspec  = Resolve-Path "StepManipulationTool.nuspec"
-          [xml]$xml = Get-Content $nuspec
-          $xml.package.metadata.version = $version
-          $xml.Save($nuspec)
-          Write-Host "Patched nuspec to version $version"
-
-      - name: NuGet pack
-        run: nuget pack StepManipulationTool.nuspec -OutputDirectory nupkg
+          Write-Host "Releasing version: $version  ($($pkg.Name))"
 
       - name: Publish to NuGet.org
         run: nuget push nupkg\*.nupkg -ApiKey ${{ secrets.NUGET_API_KEY }} -Source https://api.nuget.org/v3/index.json -NonInteractive

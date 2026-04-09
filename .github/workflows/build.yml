@@ -63,11 +63,21 @@ jobs:
       - name: Build solution
         run: msbuild StepsManipulationTool.sln /p:Configuration=Release /p:Platform="Any CPU" /m
 
-      - name: Upload build artifact
+      - name: Patch nuspec version
+        shell: pwsh
+        run: |
+          $version = "${{ steps.version.outputs.VERSION }}"
+          $nuspec  = Resolve-Path "StepManipulationTool.nuspec"
+          [xml]$xml = Get-Content $nuspec
+          $xml.package.metadata.version = $version
+          $xml.Save($nuspec)
+          Write-Host "Patched nuspec to version $version"
+
+      - name: NuGet pack
+        run: nuget pack StepManipulationTool.nuspec -OutputDirectory nupkg
+
+      - name: Upload nupkg artifact
         uses: actions/upload-artifact@v4
         with:
-          name: build-output-${{ steps.version.outputs.VERSION }}
-          path: |
-            StepManipulationTool/bin/Release/ImranAkram.XTB.StepManipulationTool.dll
-            icon.png
-            README.md
+          name: nupkg-${{ steps.version.outputs.VERSION }}
+          path: nupkg/*.nupkg
