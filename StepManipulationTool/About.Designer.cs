@@ -1,5 +1,5 @@
 ﻿
-namespace Innofactor.XTB.StepManipulationTool
+namespace XTB.StepManipulationTool
 {
     partial class About
     {
@@ -29,6 +29,7 @@ namespace Innofactor.XTB.StepManipulationTool
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(About));
             this.label4 = new System.Windows.Forms.Label();
             this.linkLabelImran = new System.Windows.Forms.LinkLabel();
             this.label3 = new System.Windows.Forms.Label();
@@ -43,7 +44,6 @@ namespace Innofactor.XTB.StepManipulationTool
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.label2 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -92,9 +92,9 @@ namespace Innofactor.XTB.StepManipulationTool
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(32, 178);
+            this.label1.Location = new System.Drawing.Point(32, 191);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(132, 16);
+            this.label1.Size = new System.Drawing.Size(131, 16);
             this.label1.TabIndex = 38;
             this.label1.Text = "Brought to you by:";
             // 
@@ -123,7 +123,8 @@ namespace Innofactor.XTB.StepManipulationTool
             this.lblDescription.Name = "lblDescription";
             this.lblDescription.Size = new System.Drawing.Size(375, 37);
             this.lblDescription.TabIndex = 35;
-            this.lblDescription.Text = "Tool to perform unsafe operations with plugin steps";
+            this.lblDescription.Text = "Move plugin steps between plugin types while preserving step GUIDs (Dataverse/Dyn" +
+    "amics 365) for cleaner ALM changes";
             // 
             // lblHeading
             // 
@@ -180,30 +181,20 @@ namespace Innofactor.XTB.StepManipulationTool
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Image = global::Innofactor.XTB.StepManipulationTool.Properties.Resources.iconLarge;
+            this.pictureBox1.Image = global::XTB.StepManipulationTool.Properties.Resources.iconLarge;
             this.pictureBox1.Location = new System.Drawing.Point(11, 11);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(153, 137);
+            this.pictureBox1.Size = new System.Drawing.Size(159, 165);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 33;
             this.pictureBox1.TabStop = false;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(32, 265);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(72, 13);
-            this.label2.TabIndex = 44;
-            this.label2.Text = "Innofactor AB";
             // 
             // About
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(581, 423);
-            this.Controls.Add(this.label2);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.linkLabelImran);
             this.Controls.Add(this.label3);
@@ -216,6 +207,7 @@ namespace Innofactor.XTB.StepManipulationTool
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "About";
             this.Text = "About";
             this.groupBox1.ResumeLayout(false);
@@ -240,6 +232,5 @@ namespace Innofactor.XTB.StepManipulationTool
         private System.Windows.Forms.ListView listAssemblies;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
-        private System.Windows.Forms.Label label2;
     }
 }

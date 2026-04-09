@@ -1,4 +1,4 @@
-﻿namespace Innofactor.XTB.StepManipulationTool
+﻿namespace XTB.StepManipulationTool
 {
     using Innofactor.Xrm.Common.SDK;
     using Innofactor.Xrm.Common.Utils;
@@ -79,7 +79,7 @@
         {
             get
             {
-                return "Innofactor";
+                return "imranakram";
             }
         }
 

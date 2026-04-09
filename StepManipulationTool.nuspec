@@ -1,16 +1,15 @@
 ﻿<?xml version="1.0"?>
 <package >
   <metadata>
-    <id>Innofactor.XTB.StepManipulationTool</id>
+    <id>ImranAkram.XTB.StepManipulationTool</id>
     <version>1.0.0</version>
     <title>Step Manipulation Tool for XrmToolBox</title>
-    <authors>Imran Akram, Alexey Shytikov, Biznamics AB</authors>
-    <owners>Biznamics AB</owners>
-    <projectUrl>https://github.com/Biznamics/StepsManipulationTool</projectUrl>
+    <authors>Imran Akram, Olekssi Shytikov</authors>
+    <owners>Imran Akram</owners>
+    <projectUrl>https://github.com/imranakram/StepsManipulationTool</projectUrl>
     <icon>icon.png</icon>
 	<readme>docs\README.md</readme>
-	<iconUrl>https://user-images.githubusercontent.com/13014005/116875731-aa86fd80-ac1b-11eb-875b-2d43121c47c5.png</iconUrl>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+	<requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>
     Tool to perform unsafe operations with plugin steps. Move steps between plugins by preserving their guids!
     </description>
@@ -18,14 +17,14 @@
     <releaseNotes>
    
     </releaseNotes>
-    <copyright>Copyright 2016-2026 Biznamics AB</copyright>
+    <copyright>Copyright 2016-2026 Imran Akram</copyright>
     <tags>XrmToolBox Plugins StepManipulationTool Step Manipulator</tags>
     <dependencies>
 		<dependency id="XrmToolBoxPackage" version="1.2025.10.74" />
     </dependencies>
   </metadata>
   <files>
-    <file src="StepManipulationTool\bin\Release\Innofactor.XTB.StepManipulationTool.dll" target="lib\net48\Plugins" />
+    <file src="StepManipulationTool\bin\Release\ImranAkram.XTB.StepManipulationTool.dll" target="lib\net48\Plugins" />
 	<file src="icon.png" target="" />
 	<file src="README.md" target="docs\" />
   </files>

@@ -1,0 +1,44 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: 'CI run ID whose nupkg artifact to publish (find it in the Actions tab URL)'
+        required: true
+
+jobs:
+  release:
+    runs-on: windows-latest
+
+    steps:
+      - name: Download nupkg artifact from CI run
+        uses: actions/download-artifact@v4
+        with:
+          run-id: ${{ inputs.run_id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          pattern: 'nupkg-*'
+          path: nupkg
+          merge-multiple: true
+
+      - name: Resolve version from nupkg filename
+        id: version
+        shell: pwsh
+        run: |
+          $pkg = Get-ChildItem nupkg\*.nupkg | Select-Object -First 1
+          if (-not $pkg) { throw "No .nupkg found in artifact" }
+          # filename: ImranAkram.XTB.StepManipulationTool.1.2026.4.3.nupkg
+          $version = $pkg.BaseName -replace '^ImranAkram\.XTB\.StepManipulationTool\.', ''
+          "VERSION=$version" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+          Write-Host "Releasing version: $version  ($($pkg.Name))"
+
+      - name: Publish to NuGet.org
+        run: nuget push nupkg\*.nupkg -ApiKey ${{ secrets.NUGET_API_KEY }} -Source https://api.nuget.org/v3/index.json -NonInteractive
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.version.outputs.VERSION }}
+          name: Release ${{ steps.version.outputs.VERSION }}
+          generate_release_notes: true
+          files: nupkg/*.nupkg
