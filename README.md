@@ -96,6 +96,19 @@ Before running advanced operations:
 - Restore NuGet packages
 - Build in **Release**
 
+### CI/CD (GitHub Actions)
+
+Two workflows live in `.github/workflows/`:
+
+| Workflow | Trigger | What it does |
+|---|---|---|
+| `build.yml` | Push to any branch / PR to master | Restores, builds in Release, uploads the DLL as a versioned artifact |
+| `release.yml` | Manual (`workflow_dispatch`) | Builds, packs the NuGet package, publishes to [nuget.org](https://www.nuget.org/packages/ImranAkram.XTB.StepManipulationTool), and creates a GitHub release |
+
+Assembly and package versions are auto-generated as `1.{yyyy}.{M}.{rev}` (e.g. `1.2026.4.3`) where `rev` is the monthly build count. You can also supply an explicit version when triggering a release manually.
+
+**Required secret:** `NUGET_API_KEY` — a nuget.org API key with push access, stored in repo Settings → Secrets → Actions.
+
 ### Debug (optional)
 - Copy the built plugin output to your local XrmToolBox `Plugins` folder (or use your existing XTB dev workflow)
 - Start XrmToolBox and load the tool
